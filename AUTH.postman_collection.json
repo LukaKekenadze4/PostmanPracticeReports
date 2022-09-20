@@ -1,0 +1,378 @@
+{
+	"info": {
+		"_postman_id": "95c5602d-e17a-4854-9842-4fc99913a5d0",
+		"name": "AUTH",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21325852"
+	},
+	"item": [
+		{
+			"name": "Basic Auth",
+			"item": [
+				{
+					"name": "Basic authorization{valid data}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const resp = pm.response.json()\r",
+									"pm.test(\"Auth should be True\", ()=>{\r",
+									"    pm.expect(String(resp.authenticated)).to.equal(\"true\")\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Auth username should be luka\", ()=>{\r",
+									"    pm.expect(resp.user).to.equal(\"luka\")\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Status code should be 200\", ()=>{\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"pm.test(\"Status code name has string\", function () {\r",
+									"    pm.response.to.have.status(\"OK\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "kekenadze",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "luka",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Basic_URL}}/basic-auth/:user/:passwd",
+							"host": [
+								"{{Basic_URL}}"
+							],
+							"path": [
+								"basic-auth",
+								":user",
+								":passwd"
+							],
+							"variable": [
+								{
+									"key": "user",
+									"value": "luka"
+								},
+								{
+									"key": "passwd",
+									"value": "kekenadze"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Basic authorization{Invalid data}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "kekenadze",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "luka",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Basic_URL}}/basic-auth/:user/:passwd",
+							"host": [
+								"{{Basic_URL}}"
+							],
+							"path": [
+								"basic-auth",
+								":user",
+								":passwd"
+							],
+							"variable": [
+								{
+									"key": "user",
+									"value": "nika"
+								},
+								{
+									"key": "passwd",
+									"value": "kekenadze"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bearer Auth",
+			"item": [
+				{
+					"name": "Basic authorization_empty_field",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Basic_URL}}/basic-auth/:user/:passwd",
+							"host": [
+								"{{Basic_URL}}"
+							],
+							"path": [
+								"basic-auth",
+								":user",
+								":passwd"
+							],
+							"variable": [
+								{
+									"key": "user",
+									"value": ""
+								},
+								{
+									"key": "passwd",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bearer Auth Authorized",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const resp = pm.response.json()\r",
+									"pm.test(\"Auth should be True\", ()=>{\r",
+									"    pm.expect(String(resp.authenticated)).to.equal(\"true\")\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AcessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Basic_URL}}/bearer",
+							"host": [
+								"{{Basic_URL}}"
+							],
+							"path": [
+								"bearer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bearer Auth Unauthorizes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Basic_URL}}/bearer",
+							"host": [
+								"{{Basic_URL}}"
+							],
+							"path": [
+								"bearer"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Digest Auth",
+			"item": [
+				{
+					"name": "Digest Auth Autorizated",
+					"request": {
+						"auth": {
+							"type": "digest",
+							"digest": [
+								{
+									"key": "qop",
+									"value": "auth",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "kekenadze",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "luka",
+									"type": "string"
+								},
+								{
+									"key": "algorithm",
+									"value": "MD5",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Basic_URL}}/digest-auth/:qop/:user/:passwd",
+							"host": [
+								"{{Basic_URL}}"
+							],
+							"path": [
+								"digest-auth",
+								":qop",
+								":user",
+								":passwd"
+							],
+							"variable": [
+								{
+									"key": "qop",
+									"value": "auth"
+								},
+								{
+									"key": "user",
+									"value": "luka"
+								},
+								{
+									"key": "passwd",
+									"value": "kekenadze"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Basic_URL",
+			"value": "https://httpbin.org/"
+		},
+		{
+			"key": "AcessToken",
+			"value": "--",
+			"type": "string"
+		}
+	]
+}
